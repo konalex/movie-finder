@@ -1,18 +1,22 @@
 <template>
 	<div class="container h-full">
+		<!-- slider with movies -->
 		<el-carousel class="h-[calc(90%)] sm:min-h-2/3" heigth="500px" indicator-position="outside" :autoplay="false">
 			<el-carousel-item v-for="item in films" :key="item.imdbID" class="h-full">
 				<NuxtLink :to="`details/${item.imdbID}`" class="flex flex-col justify-start items-center h-full">
+					<!-- moview preview -->
 					<DetailsFilm :poster="item.Poster" :title="item.Title" :year="item.Year" />
 				</NuxtLink>
 			</el-carousel-item>
 		</el-carousel>
 		<div class="flex mt-4">
+			<!-- back button -->
 			<NuxtLink to="/" class="w-1/2">
 				<el-button class="w-full" type="danger">
 					Back
 				</el-button>
 			</NuxtLink>
+			<!-- load more button -->
 			<el-form
 				label-width="120px"
 				label-position="top"
@@ -55,11 +59,13 @@ async function getMore() {
 }
 
 onBeforeUnmount(() => {
+	// clear search string for bugs preventing
 	store.setSearchString('')
 })
 
 </script>
 
+<!-- some visual bugs fixes -->
 <style lang="sass">
 
 .el-carousel__container

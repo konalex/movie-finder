@@ -1,17 +1,28 @@
 <template>
 	<div class="container mx-auto">
+		<!-- back button -->
 		<NuxtLink to="/" class="w-1/2 mx-auto flex">
 			<el-button class="w-full my-4" type="danger">
 				To home page
 			</el-button>
 		</NuxtLink>
+		<!-- movie information -->
 		<div v-if="film.Poster" class="flex flex-col w-full sm:w-80 mx-auto">
 			<div class="w-full">
-				<DetailsFilm :poster="film.Poster" :title="film.Title" :year="film.Year" :director="film.Director" />
+				<!-- preview -->
+				<DetailsFilm
+					:poster="film.Poster"
+					:title="film.Title"
+					:year="film.Year"
+					:director="film.Director"
+				/>
+				<!-- accordion with full info -->
 				<el-collapse accordion>
 					<el-collapse-item name="1" title="Full info">
 						<div v-for="(item, key, id) in more" :key="id" class="flex justify-between items-start py-4 border-b-2">
+							<!-- rating info -->
 							<DetailsRatings v-if="special.includes(key)" :name="key" :data="item" />
+							<!-- other info -->
 							<template v-else>
 								<span class="font-bold mr-2">
 									{{ key }}

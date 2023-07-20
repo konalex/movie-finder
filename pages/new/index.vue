@@ -48,11 +48,13 @@
 				</el-upload>
 			</el-form-item>
 			<div class="flex">
+				<!-- submit button -->
 				<el-form-item class="w-1/2">
 					<el-button type="primary" @click="submitForm(ruleFormRef)" class="w-full">
 						Submit
 					</el-button>
 				</el-form-item>
+				<!-- cancel button -->
 				<el-form-item class="w-1/2 ml-1">
 					<NuxtLink to="/" class="w-full">
 						<el-button class="w-full">

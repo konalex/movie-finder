@@ -5,13 +5,14 @@ export default defineNuxtConfig({
 			title: 'MovieFinder'
 		}
 	},
-	devtools: { enabled: true },
+	devtools: { enabled: false },
 	modules: [
 		"@element-plus/nuxt",
 		"@nuxtjs/tailwindcss",
 		"@pinia/nuxt"
 	],
 	pinia: {
+		// preventing bugs with auto-imports
 		autoImports: [
 			'defineStore',
 		],

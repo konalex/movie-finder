@@ -1,5 +1,6 @@
 <template>
 	<div class="flex flex-col w-full">
+		<!-- settings form -->
 		<el-form
 			:model="form"
 			ref="ruleFormRef"
@@ -35,5 +36,3 @@ function submitForm() {
 }
 
 </script>
-
-<style></style>
