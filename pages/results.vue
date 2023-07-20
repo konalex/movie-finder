@@ -31,6 +31,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'films'
+})
+
 import { useFilmsStore } from '@/stores/films'
 const store = useFilmsStore()
 

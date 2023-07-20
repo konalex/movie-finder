@@ -40,6 +40,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'details'
+})
 // special variables
 const special = ['Ratings'];
 const except = ['imdbID', 'imdbVotes', 'imdbRating', 'Poster'];
