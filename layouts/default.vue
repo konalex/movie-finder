@@ -1,37 +1,27 @@
 <template>
-	<el-container class="container mx-auto h-screen">
-		<el-header class="flex flex-col sm:flex-row w-full items-end" height="auto">
-			<div class="w-1/5/ items-end justify-center hidden sm:flex">
-				<!-- new button -->
-				<NuxtLink to="/new">
-					<el-button type="success" :icon="Edit" :disabled="isNewRoute">
-						New
-					</el-button>
-				</NuxtLink>
-			</div>
+	<el-container class="container mx-auto h-screen relative">
+		<el-header class="flex flex-col sm:flex-row w-full items-end mt-4" height="auto">
 			<!-- Main 'logo' -->
-			<NuxtLink to="/" class="w-full sm:w-96" id="header-title">
+			<NuxtLink to="/" class="w-full" id="header-title">
 				<h1 class="text-5xl font-semibold text-center">
-					<span class="text-amber-300 -mr-1">
+					<span class="text-sky-600 -mr-1">
 						Movie
 					</span>
-					<span class="text-sky-600 -ml-1">
+					<span class="text-amber-400 -ml-1">
 						Finder
 					</span>
 				</h1>
 			</NuxtLink>
-			<!-- block for mobile -->
-			<div class="w-full flex mt-2 sm:w-1/5 gap-x-1">
+			<div class="flex items-end justify-center absolute">
 				<!-- new button -->
-				<NuxtLink to="/new" class="sm:hidden inline w-1/2">
-					<el-button type="success" :icon="Edit" :disabled="isNewRoute" class="w-full">
-						New
-					</el-button>
+				<NuxtLink to="/new" class="w-10 h-10 absolute -top-10 left-8">
+					<el-button type="success" size="large" circle :icon="Edit" :disabled="isNewRoute" />
 				</NuxtLink>
-				<!-- settings button -->
-				<NuxtLink to="/settings" class="w-1/2 inline sm:w-auto">
-					<el-button type="info" :icon="Setting" :disabled="isSettingsRoute" class="w-full">
-						Settings
+				<!-- back button -->
+				<NuxtLink v-if="!isHomeRoute" to="/" class="absolute z-20 top-12 left-8">
+					<el-button class="w-full" circle size="large" type="info">
+						<el-icon v-if="isResultsRoute"><Back /></el-icon>
+						<el-icon v-else><Close /></el-icon>
 					</el-button>
 				</NuxtLink>
 			</div>
@@ -44,16 +34,16 @@
 </template>
 
 <script setup>
-import { Edit, Setting } from '@element-plus/icons-vue'
+import { Edit, Back, Close } from '@element-plus/icons-vue'
 
 const routes = {
 	new: 'new',
-	settings: 'settings'
+	home: 'index',
+	results: 'results'
 }
-
 const route = useRoute()
-
 const isNewRoute = computed(() => route.name === routes.new)
-const isSettingsRoute = computed(() => route.name === routes.settings)
+const isHomeRoute = computed(() => route.name === routes.home)
+const isResultsRoute = computed(() => route.name === routes.results)
 
 </script>

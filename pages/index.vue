@@ -6,13 +6,20 @@
 			v-loading="loading"
 			element-loading-background="rgba(255, 255, 255, 0.7)"
 		>
-			<el-form class="w-full z-20" @submit="submit">
-				<el-input
-					v-model="title"
-					size="large"
-					placeholder="Please input the movie title"
-					:prefix-icon="Search"
-				/>
+			<el-form class="w-full z-20 flex" @submit.prevent="submit">
+				<el-form-item class="w-full">
+					<el-input
+						v-model="title"
+						size="large"
+						placeholder="Please input the movie title"
+						:prefix-icon="Search"
+					/>
+				</el-form-item>
+
+				<el-form-item class="ml-1">
+					<el-button size="large" type="primary" class="w-full" :icon="Search" native-type="submit" />
+				</el-form-item>
+
 			</el-form>
 			<!-- error message -->
 			<div :class="['flex transition-all text-center font-semibold mt-4 ease-in-out text-danger', {
@@ -35,9 +42,8 @@ const loading = ref(false)
 const message = ref('')
 
 // form submit
-function submit(event) {
+function submit() {
 	if (!title.value) return;
-	event.preventDefault();
 
 	search(title.value);
 }
@@ -59,18 +65,11 @@ async function search(title) {
 		store.setTotal(Number(total))
 
 		useRouter().push({ path: 'results' })
-
-		console.log(useRouter().push({ path: 'results' }));
 	}
 	else {
 		message.value = error;
 	}
 }
-
-onMounted(() => {
-	// set default api key
-	localStorage.setItem('moviefinder_apikey', '68c2f680')
-})
 
 </script>
 

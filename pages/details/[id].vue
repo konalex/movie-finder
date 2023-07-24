@@ -1,21 +1,10 @@
 <template>
 	<div class="container mx-auto">
-		<!-- back button -->
-		<NuxtLink to="/" class="w-1/2 mx-auto flex">
-			<el-button class="w-full my-4" type="danger">
-				To home page
-			</el-button>
-		</NuxtLink>
 		<!-- movie information -->
-		<div v-if="film.Poster" class="flex flex-col w-full sm:w-80 mx-auto">
+		<div v-if="!!Object.keys(film).length" class="flex flex-col w-full sm:w-80 mx-auto">
 			<div class="w-full">
 				<!-- preview -->
-				<DetailsFilm
-					:poster="film.Poster"
-					:title="film.Title"
-					:year="film.Year"
-					:director="film.Director"
-				/>
+				<DetailsFilm :poster="film.Poster" :title="film.Title" :year="film.Year" :director="film.Director" />
 				<!-- accordion with full info -->
 				<el-collapse accordion>
 					<el-collapse-item name="1" title="Full info">
@@ -40,8 +29,13 @@
 </template>
 
 <script setup>
+const { app } = useRuntimeConfig()
 definePageMeta({
-  middleware: 'details'
+	middleware: [
+		function (to, from) {
+			if (!to.params.id) return navigateTo('/')
+		}
+	]
 })
 // special variables
 const special = ['Ratings'];
@@ -52,16 +46,17 @@ const film = ref({});
 // film id
 const id = computed(() => useRoute().params.id)
 // get film
-onMounted(async () => {
-	const { data } = await useFetch('https://www.omdbapi.com/', {
-		query: {
-			i: id,
-			type: 'movie',
-			apikey: '68c2f680'
-		}
-	});
-	film.value = data.value;
-})
+await useLazyFetch(app.apiUrl, {
+	query: {
+		i: id,
+		type: app.type,
+		apikey: app.apikey
+	},
+	pick: ['value'],
+	onResponse({ response }) {
+		film.value = response._data;
+	}
+});
 
 // computed for data preview
 const more = computed(() => {

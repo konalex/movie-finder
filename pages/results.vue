@@ -1,5 +1,5 @@
 <template>
-	<div class="container h-full">
+	<div class="container min-h-[50%] h-full">
 		<!-- slider with movies -->
 		<el-carousel class="h-[calc(90%)] sm:min-h-2/3" heigth="500px" indicator-position="outside" :autoplay="false">
 			<el-carousel-item v-for="item in films" :key="item.imdbID" class="h-full">
@@ -9,63 +9,17 @@
 				</NuxtLink>
 			</el-carousel-item>
 		</el-carousel>
-		<div class="flex mt-4">
-			<!-- back button -->
-			<NuxtLink to="/" class="w-1/2">
-				<el-button class="w-full" type="danger">
-					Back
-				</el-button>
-			</NuxtLink>
-			<!-- load more button -->
-			<el-form
-				label-width="120px"
-				label-position="top"
-				class="w-1/2 z-20"
-			>
-				<el-button class="w-full ml-1 flex items-center" type="primary" :disabled="available || processing" @click.stop="getMore">
-					More
-				</el-button>
-			</el-form>
-		</div>
 	</div>
 </template>
 
 <script setup>
-definePageMeta({
-  middleware: 'films'
-})
-
 import { useFilmsStore } from '@/stores/films'
-const store = useFilmsStore()
 
-const films = computed(() => store.getAllFilms)
-const total = computed(() => store.getTotal)
-const title = store.getSearchString;
-
-const available = computed(() => (page * 10) < total.value)
-
-const page = ref(2)
-const processing = ref(false)
-
-async function getMore() {
-	if(processing.value) return
-	if(!available) return
-	processing.value = true
-
-	const { success, data } = await useSearch(page.value, title)
-
-	if(success) {
-		store.addFilmsInList(data)
-		page.value = page.value + 1
-	}
-
-	processing.value = false;
-}
-
-onBeforeUnmount(() => {
-	// clear search string for bugs preventing
-	store.setSearchString('')
+definePageMeta({
+	middleware: ['films']
 })
+
+const films = computed(() => useFilmsStore().getAllFilms)
 
 </script>
 

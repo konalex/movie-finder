@@ -3,12 +3,14 @@ const checkResponse = (type) => (/true/).test(type.toLowerCase());
 
 // simple API fetch
 export async function useSearch(page, title) {
-	const { data } = await useFetch('https://www.omdbapi.com/', {
+	const { app } = useRuntimeConfig()
+
+	const { data } = await useFetch(app.apiUrl, {
 		query: {
 			s: title,
 			page: page,
-			type: 'movie',
-			apikey: localStorage.getItem('moviefinder_apikey')
+			type: app.type,
+			apikey: app.apikey
 		}
 	});
 

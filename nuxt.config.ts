@@ -17,4 +17,15 @@ export default defineNuxtConfig({
 			'defineStore',
 		],
 	},
+	runtimeConfig: {
+		app: {
+			apikey: process.env.NUXT_API_SECRET,
+			type: process.env.NUXT_API_TYPE,
+			apiUrl: process.env.NUXT_API_URL
+		}
+	},
+	ssr: true,
+	routeRules: {
+		'/results': { ssr: false }
+	}
 })

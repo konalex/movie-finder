@@ -1,8 +1,8 @@
 <template>
-	<div class="relative">
+	<div class="relative w-2/3 mx-auto">
 		<!-- Success message -->
 		<div
-			:class="['opacity-0 absolute flex flex-col justify-center items-center w-full h-[37.5rem] bg-emerald-400 rounded-md transition delay-100', {
+			:class="['opacity-0 absolute flex flex-col justify-center items-center h-[37.5rem] bg-emerald-400 rounded-md transition delay-100', {
 				'opacity-100': success
 			}]"
 		>
@@ -36,8 +36,11 @@
 			</el-form-item>
 
 			<el-form-item label="Poster" prop="poster">
-				<el-upload :show-file-list="false" :on-success="uploadFileSuccess"
-					class="border flex justify-center items-center mx-auto w-full">
+				<el-upload
+					:show-file-list="false"
+					:on-success="uploadFileSuccess"
+					class="border flex justify-center items-center mx-auto w-full"
+				>
 					<img v-if="form.poster" :src="form.poster" />
 					<div v-else class="w-full h-full flex flex-col justify-center items-center py-20">
 						<el-icon class="mb-4" size="40">
@@ -47,20 +50,18 @@
 					</div>
 				</el-upload>
 			</el-form-item>
-			<div class="flex">
+			<div class="flex mt-8">
 				<!-- submit button -->
 				<el-form-item class="w-1/2">
-					<el-button type="primary" @click="submitForm(ruleFormRef)" class="w-full">
+					<el-button type="success" @click="submitForm(ruleFormRef)" class="w-full" size="large" :disabled="!hasValue">
 						Submit
 					</el-button>
 				</el-form-item>
-				<!-- cancel button -->
-				<el-form-item class="w-1/2 ml-1">
-					<NuxtLink to="/" class="w-full">
-						<el-button class="w-full">
-							Cancel
-						</el-button>
-					</NuxtLink>
+				<!--  -->
+				<el-form-item class="w-1/2 ml-1" @click="resetForm">
+					<el-button class="w-full" type="primary" size="large">
+						Reset
+					</el-button>
 				</el-form-item>
 			</div>
 		</el-form>
@@ -103,14 +104,25 @@ const success = ref(false)
 
 // file upload
 const uploadFileSuccess = (response, uploadFile) => {
-	console.log(uploadFile);
 	form.poster = URL.createObjectURL(uploadFile.raw)
+}
+// watch file change and re-validate form
+watch(() => form.poster, async () => {
+	await ruleFormRef.value.validateField('poster');
+})
+
+const hasValue = computed(() => !!Object.values(form).find(el => el))
+
+// reset form
+function resetForm() {
+	ruleFormRef.value.resetFields(Object.keys(form))
 }
 
 // form submit
-const submitForm = async (form) => {
-	if (!form) return
-	await form.validate((valid, fields) => {
+const submitForm = async () => {
+	if (!ruleFormRef.value) return;
+	if (!hasValue) return
+	await ruleFormRef.value.validate((valid, fields) => {
 		if (valid) {
 			loading.value = true
 
