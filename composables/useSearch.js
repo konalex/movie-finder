@@ -11,7 +11,8 @@ export async function useSearch(page, title) {
 			page: page,
 			type: app.type,
 			apikey: app.apikey
-		}
+		},
+		server: true
 	});
 
 	const { Response, Search, totalResults, Error } = data.value;

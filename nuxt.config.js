@@ -24,8 +24,5 @@ export default defineNuxtConfig({
 			apiUrl: process.env.NUXT_API_URL
 		}
 	},
-	ssr: true,
-	routeRules: {
-		'/results': { ssr: false }
-	}
+	ssr: true
 })

@@ -36,3 +36,11 @@ or
 ```bash
 yarn && yarn dev
 ```
+### Build project
+```bash
+npm run build && npm run builded
+```
+or
+```bash
+yarn build && yarn builded
+```
