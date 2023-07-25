@@ -15,10 +15,10 @@ export async function useSearch(page, title) {
 		server: true
 	});
 
-	const { Response, Search, totalResults, Error } = data.value;
+	const { Response, Search, Error } = data.value;
 
 	const success = checkResponse(Response);
 
 	// renaming values with more comfortable names
-	return { success, data: Search, total: totalResults, error: Error };
+	return { success, data: Search, error: Error };
 }

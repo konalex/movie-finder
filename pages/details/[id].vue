@@ -1,7 +1,7 @@
 <template>
 	<div class="container mx-auto">
 		<!-- movie information -->
-		<div v-if="!!Object.keys(film).length" class="flex flex-col w-full sm:w-80 mx-auto">
+		<div v-if="!!Object.keys(film || {}).length" class="flex flex-col w-full sm:w-80 mx-auto">
 			<div class="w-full">
 				<!-- preview -->
 				<DetailsFilm :poster="film.Poster" :title="film.Title" :year="film.Year" :director="film.Director" />
@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-const { app } = useRuntimeConfig()
 definePageMeta({
 	middleware: [
 		function (to, from) {
@@ -40,23 +39,10 @@ definePageMeta({
 // special variables
 const special = ['Ratings'];
 const except = ['imdbID', 'imdbVotes', 'imdbRating', 'Poster'];
-
-// main data
-const film = ref({});
 // film id
 const id = computed(() => useRoute().params.id)
-// get film
-await useLazyFetch(app.apiUrl, {
-	query: {
-		i: id,
-		type: app.type,
-		apikey: app.apikey
-	},
-	pick: ['value'],
-	onResponse({ response }) {
-		film.value = response._data;
-	}
-});
+// main data
+const film = await useGet(id);
 
 // computed for data preview
 const more = computed(() => {

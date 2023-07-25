@@ -52,18 +52,15 @@ function submit() {
 async function search(title) {
 	loading.value = true;
 	message.value = '';
-	store.setSearchString(title)
 
 	store.clearFilmsList();
 
-	const { success, data, total, error } = await useSearch(1, title);
+	const { success, data, error } = await useSearch(1, title);
 
 	loading.value = false;
 
 	if(success) {
 		store.setFilmsList(data)
-		store.setTotal(Number(total))
-
 		useRouter().push({ path: 'results' })
 	}
 	else {
